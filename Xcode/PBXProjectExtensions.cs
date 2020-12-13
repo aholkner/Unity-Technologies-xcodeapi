@@ -419,5 +419,26 @@ namespace UnityEditor.iOS.Xcode.Custom.Extensions
             frameworkEmbedFileData.codeSignOnCopy = true;
             frameworkEmbedFileData.removeHeadersOnCopy = true;
         }
+
+        // Copied from AddFileToEmbedFrameworks
+        public static void AddFileToPlugIns(this PBXProject proj, string targetGuid, string fileGuid)
+        {
+            PBXNativeTargetData target = proj.nativeTargets[targetGuid];
+
+            var phaseGuid = proj.AddCopyFilesBuildPhase(targetGuid, "Copy PlugIns", "", "13");
+            var phase = proj.copyFiles[phaseGuid];
+            var frameworkEmbedFileData = proj.FindFrameworkByFileGuid(phase, fileGuid);
+
+            if (frameworkEmbedFileData == null)
+            {
+                frameworkEmbedFileData = PBXBuildFileData.CreateFromFile(fileGuid, false, null);
+                proj.BuildFilesAdd(targetGuid, frameworkEmbedFileData);
+
+                phase.files.AddGUID(frameworkEmbedFileData.guid);
+            }
+
+            frameworkEmbedFileData.codeSignOnCopy = true;
+            frameworkEmbedFileData.removeHeadersOnCopy = true;
+        }
     }
 } // namespace UnityEditor.iOS.Xcode

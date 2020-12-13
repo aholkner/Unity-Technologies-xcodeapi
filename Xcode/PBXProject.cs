@@ -840,7 +840,7 @@ namespace UnityEditor.iOS.Xcode.Custom
         /// </summary>
         /// <param name="targetGuid">The GUID of the target that is depending on the dependency.</param>
         /// <param name="targetDependencyGuid">The GUID of the dependency target</param>
-        internal void AddTargetDependency(string targetGuid, string targetDependencyGuid)
+        public void AddTargetDependency(string targetGuid, string targetDependencyGuid)
         {
             string dependencyName = nativeTargets[targetDependencyGuid].name;
             var containerProxy = PBXContainerItemProxyData.Create(project.project.guid, "1", targetDependencyGuid, dependencyName);
